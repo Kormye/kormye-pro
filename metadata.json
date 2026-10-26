@@ -1,0 +1,6 @@
+{
+  "name": "KORMYE — Nidaamka Maalinlaha ah",
+  "description": "Nidaam maalinle ah oo dhammaystiran: jadwalka maanta, Quraanka & khatmada, diiradda (pomodoro), aqoonta & xigmadda, ganacsiga & xisaabaadka, jimicsiga, athkaarta, iyo buugaagta.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
