@@ -592,3 +592,295 @@ export default function App() {
     </div>
   );
 }
+import React, { useState, useEffect } from 'react';
+import { 
+  BookOpen, Clock, Heart, Award, Sparkles, User, 
+  ArrowRight, Check, Target, Compass, Upload, X 
+} from 'lucide-react';
+
+export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  
+  // Profile State
+  const [userName, setUserName] = useState('Canab Ahmed');
+  const [userRole, setUserRole] = useState('Ganaacsade / Hal-abuur');
+  const [userGoal, setUserGoal] = useState('Quraanka & Xuska Alle');
+  const [userQuote, setUserQuote] = useState('Noloshawanaagsan waa joogteyn iyo qorshe suubban.');
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
+  // Form State
+  const [tempName, setTempName] = useState(userName);
+  const [tempRole, setTempRole] = useState(userRole);
+  const [tempGoal, setTempGoal] = useState(userGoal);
+  const [tempQuote, setTempQuote] = useState(userQuote);
+  const [step, setStep] = useState(1);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 2400);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSaveProfile = (e: React.FormEvent) => {
+    e.preventDefault();
+    setUserName(tempName || 'Hoggaamiye');
+    setUserRole(tempRole);
+    setUserGoal(tempGoal);
+    setUserQuote(tempQuote);
+    setShowOnboarding(false);
+  };
+
+  if (showSplash) {
+    return (
+      <div className="fixed inset-0 bg-[#041E16] flex flex-col items-[#center] justify-center z-50 text-white select-none">
+        <div className="relative flex items-center justify-center mb-6">
+          <div className="absolute inset-0 rounded-full bg-[#10B981] opacity-20 blur-xl animate-pulse"></div>
+          <div className="w-24 h-24 rounded-2xl bg-gradient-to-tr from-[#064E3B] to-[#10B981] flex items-center justify-center shadow-2xl border border-[#10B981]/30 transform hover:scale-105 transition-all duration-500">
+            <svg className="w-14 h-14 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#10B981" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.5V13.5M9.5 11H14.5" stroke="#041E16" strokeWidth="2" />
+            </svg>
+          </div>
+        </div>
+
+        <h1 className="text-3xl font-extrabold tracking-wider text-[#ECFDF5]">KORMYE PRO</h1>
+        <p className="text-xs text-[#A7F3D0] mt-2 tracking-widest uppercase font-medium">Nidaamka Nolosha & Horumarka</p>
+
+        <div className="mt-8 w-48 h-1.5 bg-[#064E3B] rounded-full overflow-hidden">
+          <div className="h-full bg-gradient-to-r from-[#10B981] to-[#34D399] rounded-full animate-[progress_2.2s_ease-in-out]"></div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#F0FDF4] text-[#064E3B] flex flex-col items-center justify-center p-4 relative font-sans">
+      
+      {/* Background Subtle Glows */}
+      <div className="absolute top-10 left-10 w-72 h-72 bg-[#10B981]/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#047857]/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      {/* Header Logo */}
+      <div className="flex flex-col items-center mb-6 text-center z-10">
+        <div className="w-14 h-14 rounded-xl bg-[#064E3B] flex items-center justify-center shadow-lg border border-[#10B981]/30 mb-3">
+          <svg className="w-8 h-8 text-[#10B981]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#10B981" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.5V13.5M9.5 11H14.5" stroke="#064E3B" strokeWidth="2" />
+          </svg>
+        </div>
+        <h1 className="text-2xl font-black text-[#064E3B] tracking-wide">KORMYE</h1>
+        <p className="text-xs font-semibold text-[#047857] tracking-wider uppercase mt-0.5">NIDAAMKA NOLOSHA, QURAANKA & HORUMARKA</p>
+      </div>
+
+      {/* Main Card Container */}
+      <div className="w-full max-w-md bg-white/80 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-[#D1FAE5] z-10 flex flex-col items-center">
+        
+        {/* User Avatar & Greeting */}
+        <div className="relative mb-3 flex flex-col items-center">
+          <div className="w-20 h-20 rounded-full p-1 bg-gradient-to-tr from-[#10B981] via-[#34D399] to-[#047857] shadow-md flex items-center justify-center">
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="User Avatar" className="w-full h-full rounded-full object-cover" />
+            ) : (
+              <div className="w-full h-full rounded-full bg-[#064E3B] flex items-center justify-center text-white font-bold text-2xl border-2 border-white">
+                {userName.charAt(0).toUpperCase()}
+              </div>
+            )}
+          </div>
+
+          <button 
+            onClick={() => setShowOnboarding(true)}
+            className="mt-3 px-4 py-1.5 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] text-[#047857] text-xs font-semibold flex items-center gap-1.5 hover:bg-[#D1FAE5] transition-all shadow-sm"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#10B981]" />
+            <span>Ku soo dhowow Kormye</span>
+          </button>
+        </div>
+
+        {/* Dynamic Quote Box */}
+        <div className="w-full bg-[#F0FDF4] border border-[#A7F3D0] rounded-2xl p-4 my-3 text-center shadow-inner">
+          <p className="text-sm font-bold text-[#064E3B] mb-1">«وَقُلْ رَبِّ زِدْنِي عِلْمًا»</p>
+          <p className="text-xs text-[#047857] italic font-medium">"{userQuote}"</p>
+        </div>
+
+        {/* Feature Grid */}
+        <div className="grid grid-cols-2 gap-3 w-full my-2">
+          <div className="bg-white p-3 rounded-2xl border border-[#E6F4EA] shadow-sm hover:shadow-md transition-all">
+            <div className="flex items-center gap-2 mb-1">
+              <BookOpen className="w-4 h-4 text-[#10B981]" />
+              <h4 className="text-xs font-bold text-[#064E3B]">Quraan & Qisooyin</h4>
+            </div>
+            <p className="text-[10px] text-[#047857]">Akhris & xifdi</p>
+          </div>
+
+          <div className="bg-white p-3 rounded-2xl border border-[#E6F4EA] shadow-sm hover:shadow-md transition-all">
+            <div className="flex items-center gap-2 mb-1">
+              <Clock className="w-4 h-4 text-[#10B981]" />
+              <h4 className="text-xs font-bold text-[#064E3B]">Time Focus</h4>
+            </div>
+            <p className="text-[10px] text-[#047857]">Diirad & Pomodoro</p>
+          </div>
+
+          <div className="bg-white p-3 rounded-2xl border border-[#E6F4EA] shadow-sm hover:shadow-md transition-all">
+            <div className="flex items-center gap-2 mb-1">
+              <Heart className="w-4 h-4 text-[#10B981]" />
+              <h4 className="text-xs font-bold text-[#064E3B]">Tasbiix & Duco</h4>
+            </div>
+            <p className="text-[10px] text-[#047857]">Athkaar subax & galab</p>
+          </div>
+
+          <div className="bg-white p-3 rounded-2xl border border-[#E6F4EA] shadow-sm hover:shadow-md transition-all">
+            <div className="flex items-center gap-2 mb-1">
+              <Award className="w-4 h-4 text-[#10B981]" />
+              <h4 className="text-xs font-bold text-[#064E3B]">Koorsooyin Xor ah</h4>
+            </div>
+            <p className="text-[10px] text-[#047857]">Dhis xirfaddaada</p>
+          </div>
+        </div>
+
+        {/* Enter Dashboard Action Button */}
+        <button 
+          onClick={() => setShowOnboarding(true)}
+          className="w-full mt-3 py-3 rounded-xl bg-gradient-to-r from-[#064E3B] to-[#047857] text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg hover:brightness-110 active:scale-[0.99] transition-all"
+        >
+          <span>🚀 Gal Boggaaga Maanta</span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* Onboarding & Profile Customization Modal */}
+      {showOnboarding && (
+        <div className="fixed inset-0 bg-[#041E16]/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-white rounded-3xl p-6 shadow-2xl border border-[#D1FAE5] relative animate-in fade-in zoom-in duration-200">
+            
+            <button 
+              onClick={() => setShowOnboarding(false)}
+              className="absolute top-4 right-4 p-1.5 rounded-full bg-[#F0FDF4] text-[#047857] hover:bg-[#E6F4EA]"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="text-center mb-5">
+              <div className="w-10 h-10 rounded-xl bg-[#064E3B] flex items-center justify-center mx-auto mb-2 shadow-md">
+                <svg className="w-6 h-6 text-[#10B981]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#10B981" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-extrabold text-[#064E3B]">Is-diiwaan-geli & Dhis Profile-kaaga</h3>
+              <p className="text-xs text-[#047857] mt-0.5">Dhis nidaam kuu gaar ah oo kuu fududaynaya qorshahaaga.</p>
+            </div>
+
+            <form onSubmit={handleSaveProfile} className="space-y-4">
+              {/* Photo Upload */}
+              <div className="flex flex-col items-center">
+                <label className="text-xs font-bold text-[#064E3B] mb-1">Sawirka Profile-kaaga</label>
+                <div className="relative">
+                  <div className="w-16 h-16 rounded-full bg-[#F0FDF4] border-2 border-[#10B981] flex items-center justify-center overflow-hidden shadow-sm">
+                    {avatarUrl ? (
+                      <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                    ) : (
+                      <User className="w-8 h-8 text-[#047857]" />
+                    )}
+                  </div>
+                  <label htmlFor="photo-upload" className="absolute bottom-0 right-0 bg-[#064E3B] text-white p-1 rounded-full cursor-pointer hover:bg-[#047857]">
+                    <Upload className="w-3 h-3" />
+                  </label>
+                  <input id="photo-upload" type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+                </div>
+              </div>
+
+              {/* Input Name */}
+              <div>
+                <label className="block text-xs font-bold text-[#064E3B] mb-1">Magacaaga Buuxa *</label>
+                <input 
+                  type="text"
+                  required
+                  value={tempName}
+                  onChange={(e) => setTempName(e.target.value)}
+                  placeholder="Tus: Canab Ahmed"
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#F0FDF4] border border-[#A7F3D0] text-xs text-[#064E3B] focus:outline-none focus:ring-2 focus:ring-[#10B981]"
+                />
+              </div>
+
+              {/* Roles */}
+              <div>
+                <label className="block text-xs font-bold text-[#064E3B] mb-1">Doorkaaga Nolosha</label>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  {['Ganaacsade / Hal-abuur', 'Arday / Barte', 'Xirfadle / Shaqaale', 'Qoys & Shakhsi'].map((role) => (
+                    <button
+                      key={role}
+                      type="button"
+                      onClick={() => setTempRole(role)}
+                      className={`p-2 rounded-xl border text-left text-[11px] font-semibold transition-all ${
+                        tempRole === role 
+                          ? 'bg-[#064E3B] text-white border-[#064E3B]' 
+                          : 'bg-[#F0FDF4] text-[#047857] border-[#A7F3D0] hover:bg-[#E6F4EA]'
+                      }`}
+                    >
+                      {role}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Goals */}
+              <div>
+                <label className="block text-xs font-bold text-[#064E3B] mb-1">Yoolkaaga Ugu Meyn</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {['Quraanka & Xuska Alle', 'Dhisidda Ganacsi', 'Berasahde Xirfado', 'Ceedmaadka & Jimciga'].map((goal) => (
+                    <button
+                      key={goal}
+                      type="button"
+                      onClick={() => setTempGoal(goal)}
+                      className={`p-2 rounded-xl border text-left text-[11px] font-semibold transition-all ${
+                        tempGoal === goal 
+                          ? 'bg-[#10B981] text-white border-[#10B981]' 
+                          : 'bg-[#F0FDF4] text-[#047857] border-[#A7F3D0] hover:bg-[#E6F4EA]'
+                      }`}
+                    >
+                      {goal}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quote */}
+              <div>
+                <label className="block text-xs font-bold text-[#064E3B] mb-1">Hal-ku-dheggaaga</label>
+                <input 
+                  type="text"
+                  value={tempQuote}
+                  onChange={(e) => setTempQuote(e.target.value)}
+                  placeholder="Noloshawanaagsan waa joogteyn..."
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#F0FDF4] border border-[#A7F3D0] text-xs text-[#064E3B] focus:outline-none focus:ring-2 focus:ring-[#10B981]"
+                />
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-[#064E3B] to-[#10B981] text-white font-bold text-xs shadow-md hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center gap-1.5"
+              >
+                <Check className="w-4 h-4" />
+                <span>Diiwaangeli & Fur Boggaaga</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
